@@ -1,20 +1,29 @@
 const gamePath = "/game";
+const database = firebase.database(); //eslint-disable-line no-undef
 const playerOnePath = "/players/playerOne";
 const playerTwoPath = "/game";
 
-function initializeGameDetails(database, gameData, playerOne, playerTwo) {
+function initializeGameDetails(gameData, playerOne, playerTwo) {
     database.ref(gamePath).set(gameData);
     database.ref(playerOnePath).set(playerOne);
     database.ref(playerTwoPath).set(playerTwo);
 }
 
-function printPlayerOneDetails(database) {
+function processConnectedUsers() {
+    database.ref(".info/connected").on("value", (snapshot) => {
+        if (snapshot.val()) {
+            console.log(`Someone connected: ${snapshot.val()}`);
+        }
+    });
+}
+
+function printPlayerOneDetails() {
     database.ref(playerOnePath).on("value", (snapshot) => {
         console.log(snapshot.val());
     });
 }
 
-function printPlayerTwoDetails(database) {
+function printPlayerTwoDetails() {
     database.ref(playerTwoPath).on("value", (snapshot) => {
         console.log(snapshot.val());
     });
@@ -43,7 +52,10 @@ const playerTwo = {
 };
 
 
-const database = firebase.database(); //eslint-disable-line no-undef
-initializeGameDetails(database, gameData, playerOne, playerTwo);
-printPlayerOneDetails(database);
-printPlayerTwoDetails(database);
+
+initializeGameDetails(gameData, playerOne, playerTwo);
+printPlayerOneDetails();
+printPlayerTwoDetails();
+
+
+processConnectedUsers();
