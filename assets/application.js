@@ -56,6 +56,5 @@ const playerTwo = {
 initializeGameDetails(gameData, playerOne, playerTwo);
 printPlayerOneDetails();
 printPlayerTwoDetails();
-
-
 processConnectedUsers();
+
